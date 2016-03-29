@@ -1,0 +1,19 @@
+{
+  "bus":{
+    "number": "",
+    "spec": "",
+    "seat": ""
+  },
+  "train":{
+    "number": "",
+    "spec": "",
+    "seat": ""
+  },
+  "airplane":{
+    "number": "",
+    "spec": "",
+    "seat": "",
+    "gate": "",
+    "baggage": ""
+  }
+}

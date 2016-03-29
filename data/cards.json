@@ -1,0 +1,114 @@
+[
+    {
+        "from": "2 Algiers",
+        "to": "3 Kabul",
+        "ticket": {
+            "type": "bus",
+            "number": "848F",
+            "spec": "",
+            "seat": "98J"
+        }
+    },
+    {
+        "from": "8 Luanda",
+        "to": "9 Tirana",
+        "ticket": {
+            "type": "airplane",
+            "number": "UF22",
+            "spec": "",
+            "seat": "16R",
+            "gate": 5,
+            "baggage": "auto"
+        }
+    },
+    {
+        "from": "4 Yerevan",
+        "to": "5 Canberra",
+        "ticket": {
+            "type": "bus",
+            "number": "701C",
+            "spec": "",
+            "seat": "36R"
+        }
+    },
+    {
+        "from": "9 Tirana",
+        "to": "10 Andorra la Vella",
+        "ticket": {
+            "type": "airplane",
+            "number": "FZ83",
+            "spec": "",
+            "seat": "30C",
+            "gate": 35,
+            "baggage": "auto"
+        }
+    },
+    {
+        "from": "0 Saint John's",
+        "to": "1 Buenos Aires",
+        "ticket": {
+            "type": "bus",
+            "number": "874K",
+            "spec": "",
+            "seat": "86R"
+        }
+    },
+    {
+        "from": "5 Canberra",
+        "to": "6 Vienna",
+        "ticket": {
+            "type": "airplane",
+            "number": "YN11",
+            "spec": "",
+            "seat": "81D",
+            "gate": 0,
+            "baggage": "auto"
+        }
+    },
+    {
+        "from": "6 Vienna",
+        "to": "7 Baku",
+        "ticket": {
+            "type": "train",
+            "number": "89HP",
+            "spec": "",
+            "seat": "95G"
+        }
+    },
+    {
+        "from": "1 Buenos Aires",
+        "to": "2 Algiers",
+        "ticket": {
+            "type": "airplane",
+            "number": "XY44",
+            "spec": "",
+            "seat": "78L",
+            "gate": 6,
+            "baggage": "auto"
+        }
+    },
+    {
+        "from": "3 Kabul",
+        "to": "4 Yerevan",
+        "ticket": {
+            "type": "airplane",
+            "number": "UH53",
+            "spec": "",
+            "seat": "89K",
+            "gate": 5,
+            "baggage": 35
+        }
+    },
+    {
+        "from": "7 Baku",
+        "to": "8 Luanda",
+        "ticket": {
+            "type": "airplane",
+            "number": "GD99",
+            "spec": "",
+            "seat": "44O",
+            "gate": 5,
+            "baggage": 18
+        }
+    }
+]
