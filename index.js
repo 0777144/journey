@@ -1,5 +1,4 @@
 (function () {
-    (function () {
     function getJson(url){
         return new Promise((resolve, reject) => {
             var request = new XMLHttpRequest();
@@ -47,6 +46,4 @@
             journey.printInstructions("#instructions");
             journey.printSimple("#simple");
         });
-})();
-
 })();
