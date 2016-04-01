@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Journey by 0777144</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Journey</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/0777144/journey" class="btn">View on GitHub</a>
+      <a href="https://github.com/0777144/journey/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/0777144/journey/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="journey" class="anchor" href="#journey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Journey</h1>
+
+<p>Journey is simple lib to manage your travel cards and get instructions for trip.
+To learn more, please visit the project page</p>
+
+<h1>
+<a id="input-data-format" class="anchor" href="#input-data-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input data format</h1>
+
+<div class="highlight highlight-source-js"><pre>[
+  {
+      <span class="pl-s"><span class="pl-pds">"</span>from<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>to<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>B<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>ticket<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>bus<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>number<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>848F<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>spec<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>seat<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>98J<span class="pl-pds">"</span></span>
+      }
+    },
+    {
+      <span class="pl-s"><span class="pl-pds">"</span>from<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>D<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>to<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>B<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>ticket<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>airplane<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>number<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>FZ83<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>spec<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>seat<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>30C<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>gate<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">35</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>baggage<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>auto<span class="pl-pds">"</span></span>
+      }
+    }
+]</pre></div>
+
+<h1>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h1>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> journey <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Journey</span>(inputData); <span class="pl-c">// creating your journey</span>
+
+    <span class="pl-smi">journey</span>.<span class="pl-en">printInstructions</span>(<span class="pl-s"><span class="pl-pds">"</span>#instructions<span class="pl-pds">"</span></span>); <span class="pl-c">// instructions will be append to #instructions element</span>
+    <span class="pl-smi">journey</span>.<span class="pl-en">printSimple</span>(<span class="pl-s"><span class="pl-pds">"</span>#simple<span class="pl-pds">"</span></span>); <span class="pl-c">// simple print without types, only point. From A to B.</span>
+
+    <span class="pl-k">var</span> instructions <span class="pl-k">=</span> <span class="pl-smi">journey</span>.<span class="pl-en">getInstructions</span>(); <span class="pl-c">// return array of instructions</span>
+    <span class="pl-c">// ["Take bus 848F from A to B. Seat 98J.",</span>
+    <span class="pl-c">//  "From B, take flight UF22 to C. Gate 5. Seat undefi… be automatically transferred from your last leg.",</span>
+    <span class="pl-c">//  "Take bus 701C from C to D. Seat 36R.",</span>
+    <span class="pl-c">//  "From D, take flight FZ83 to B. Gate 35. Seat undef… be automatically transferred from your last leg.",</span>
+    <span class="pl-c">//  "From B, take flight YN11 to E. Gate 0. Seat undefi… be automatically transferred from your last leg."]</span>
+
+    <span class="pl-k">var</span> simpleInstruction <span class="pl-k">=</span> <span class="pl-smi">journey</span>.<span class="pl-en">getSimple</span>(); <span class="pl-c">// return array of simple instructions if you just want to know route</span>
+    <span class="pl-c">// ["From A to  B", "From B to  C", "From C to  D", "From D to  B", "From B to  E"]</span>
+
+    <span class="pl-k">var</span> types <span class="pl-k">=</span> <span class="pl-smi">journey</span>.<span class="pl-en">getTypes</span>();<span class="pl-c">// return ["airplane", "train"] - it is default types</span>
+</pre></div>
+
+<h1>
+<a id="add-custom-type-example" class="anchor" href="#add-custom-type-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add custom type example</h1>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-c">// add types before creating a Journey object</span>
+    <span class="pl-smi">Journey</span>.<span class="pl-smi">fn</span>.<span class="pl-en">addTicketType</span>(<span class="pl-s"><span class="pl-pds">"</span>bus<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">card</span>){
+        <span class="pl-k">let</span> ticket <span class="pl-k">=</span> {
+            number<span class="pl-k">:</span> <span class="pl-smi">card</span>.<span class="pl-smi">ticket</span>.<span class="pl-smi">number</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">`</span><span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">card</span>.<span class="pl-smi">ticket</span>.<span class="pl-smi">number</span><span class="pl-pse">}</span></span> <span class="pl-pds">`</span></span>,
+            spec<span class="pl-k">:</span> <span class="pl-smi">card</span>.<span class="pl-smi">ticket</span>.<span class="pl-smi">spec</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">`</span>the <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">card</span>.<span class="pl-smi">ticket</span>.<span class="pl-smi">spec</span><span class="pl-pse">}</span></span> <span class="pl-pds">`</span></span>,
+            seat<span class="pl-k">:</span> <span class="pl-smi">card</span>.<span class="pl-smi">ticket</span>.<span class="pl-smi">seat</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span>No seat assignment.<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">`</span>Seat <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">card</span>.<span class="pl-smi">ticket</span>.<span class="pl-smi">seat</span><span class="pl-pse">}</span></span>.<span class="pl-pds">`</span></span>
+        };
+        <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">`</span>Take <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">ticket</span>.<span class="pl-smi">spec</span><span class="pl-pse">}</span></span>bus <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">ticket</span>.<span class="pl-smi">number</span><span class="pl-pse">}</span></span>from <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">card</span>.<span class="pl-smi">from</span><span class="pl-pse">}</span></span> to <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">card</span>.<span class="pl-smi">to</span><span class="pl-pse">}</span></span>. <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-smi">ticket</span>.<span class="pl-smi">seat</span><span class="pl-pse">}</span></span><span class="pl-pds">`</span></span>;
+    });
+
+    <span class="pl-k">var</span> journey <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Journey</span>(inputData);
+    <span class="pl-k">var</span> types <span class="pl-k">=</span> <span class="pl-smi">journey</span>.<span class="pl-en">getTypes</span>();<span class="pl-c">// and now you can check that type was added, return ["airplane", "train", "bus"]</span>
+
+    <span class="pl-c">// now you can print it</span>
+    <span class="pl-smi">journey</span>.<span class="pl-en">printInstructions</span>(<span class="pl-s"><span class="pl-pds">"</span>#instructions<span class="pl-pds">"</span></span>);</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/0777144/journey">Journey</a> is maintained by <a href="https://github.com/0777144">0777144</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
