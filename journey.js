@@ -5,20 +5,35 @@ var Journey = (function (){
         nodes = [], // вершины
         edges = [], // ребра
         nodesIndexes = {}, // объект для получения индекса вершины по имени
-        startNode,
-        endNode;
+        nodesSequence = [],
+        edgesSequence = [],
+        instructions;
 
-    //var Journey = function (data) {
-    //    init(data);
-    //};
+    var dfsVisited = [];
+    var dfs = function (matrix,u) {
+        dfsVisited[u] = true;
+        for(let v = 0; v < matrix[u].length; v++) {
+            if(matrix[u][v] == 1 && !dfsVisited[v])
+                dfs(matrix,v);
+        }
+    };
+
+    var Journey = function () {
+        if( arguments.length == 2 ) {
+            for( let type in arguments[1])
+                ticketTypes[type] = arguments[1][type];
+            init(arguments[0])
+        } else if( arguments.length == 1 ) {
+            init(arguments[0])
+        } else {
+            throw new Error('Too many arguments');
+        }
+    };
 
     //window.Journey = Journey;
-
     const merge = (...sources) => Object.assign({}, ...sources);
 
     var init = function (data) {
-        let nodesSequence,
-            edgesSequence = [];
         edges = getEdges(data); // {"AB":{},"BC":{},"CD":{}}
         nodes = getNodes(data); // ["A","B", "D", "E", "C"]
         nodesIndexes = getNodesIndexes(data); // {"A":0,"B":1,"D":2,"E":3,"C":4}
@@ -27,16 +42,10 @@ var Journey = (function (){
                                                      //  [0,1,0,0,0],
                                                      //  [0,0,0,0,0],
                                                      //  [0,0,1,0,0]]
-        /*
-        log( `${nodes[0]} ${nodeDegree(adjacencyMatrix,0)}` );
-        log( `${nodes[1]} ${nodeDegree(adjacencyMatrix,1)}` );
-        log( `${nodes[2]} ${nodeDegree(adjacencyMatrix,2)}` );
-        log( `${nodes[3]} ${nodeDegree(adjacencyMatrix,3)}` );
-        log( `${nodes[4]} ${nodeDegree(adjacencyMatrix,4)}` );
-        */
 
         if(!checkForEulerPath(adjacencyMatrix))
             throw new Error('граф не является эйлеровым');
+
         nodesSequence = findEulerPath(adjacencyMatrix);
         for( let i=0; i < nodesSequence.length-1; i++) {
             let from = nodesSequence[i],
@@ -44,8 +53,18 @@ var Journey = (function (){
 
             edgesSequence.push(edges[from+to]);
         }
+        instructions = getInstructions(edgesSequence);
+    };
 
-        log(edgesSequence);
+    var getInstructions = function (edges) {
+        let card,
+            instructions = [];
+
+        for(let i = 0; i < edges.length; i++) {
+            card = edges[i];
+            instructions.push(outCard(card));
+        }
+        return instructions;
     };
 
     var checkForEulerPath = function (matrix) {
@@ -77,15 +96,6 @@ var Journey = (function (){
                 return false;
         }
         return true;  // граф является эйлеровым
-    };
-
-    var dfsVisited = [];
-    var dfs = function (matrix,u) {
-        dfsVisited[u] = true;
-        for(let v = 0; v < matrix[u].length; v++) {
-            if(matrix[u][v] == 1 && !dfsVisited[v])
-                dfs(matrix,v);
-        }
     };
 
     // степень вершины ориентированного графа = полустепень захода - полуспенень выхода
@@ -129,7 +139,6 @@ var Journey = (function (){
         }
         return resultNodes;
     };
-
 
     var makeAdjacencyMatrix = function (data) {
         // if !isArray throw new Error TODO
@@ -222,94 +231,19 @@ var Journey = (function (){
         train(card){
             return `Take train ${card.ticket.number} from ${card.from} to ${card.to}. Seat ${card.ticket.seat}.`;
         }
-    }
-
-    /*
-    var sort = function(input){
-        input = Array.from(input) || [];// передача по значнеию
-        // валидация входных данных
-        // и копирование их, а не изменение по ссылке
-        var startFrom = input[0].from,
-            endTo = input[0].to;
-
-        var result = input.splice(0, 1);
-
-        // input.length+1 чтобы не оставались куски по 1 элементу в случае зацикленного пути
-        for (var j = 0; j < input.length + 1; j++){
-            for (var i = 0; i < input.length; i++){
-                if(input[i].from == endTo){
-                    endTo = input[i].to;
-                    var deleted_elem = input.splice(i,1)[0];
-                    result.push(deleted_elem);
-                } else if(input[i].to == startFrom){
-                    startFrom = input[i].from;
-                    var deleted_elem = input.splice(i,1)[0];
-                    result.splice(0,0,deleted_elem);
-                }
-            }
-        }
-
-        if(input.length > 0) {
-            var part = sort(input),
-                partStartFrom = part[0].from,
-                partEndTo = part[part.length-1].to;
-
-            log('part');
-            log(part);
-            //if(partStartFrom != partEndTo){
-            //    while(partStartFrom != partEndTo){
-            //        //log(part);
-            //        var first = part.slice(1);
-            //        log('first');
-            //        log(first);
-            //        break;
-            //    }
-            //}
-            log(result);
-            for(var i = 0; i < result.length-1; i++){
-                if(result[i].from == partEndTo && result[i+1].to == partStartFrom){
-                    //alert(1);
-                    //log(i)
-                    result.splice.apply(result, [0, 0].concat(part));
-                    log(result);
-                    //result = result.slice( 0, i ).concat( part ).concat( result.slice( i ) );
-                    break;
-
-                }
-            }
-
-        }
-
-        return result;
     };
-    */
 
     var outCard = function(card){
         if(ticketTypes[card.ticket.type] != undefined)
             return ticketTypes[card.ticket.type](card);
         else throw new Error('Ticket type not found.');
-    }
+    };
 
-
-    return {
-        init(data){
-            init(data);
+    Journey.fn = Journey.prototype = {
+        getInstructions(){
+            return instructions;
         },
-        route(value){
-            return sort(value);
-        },
-        getInstructions(cards){
-            let i;
-            let result = [];
-            for(i in cards){
-                result.push(outCard(cards[i]));
-            }
-            return result;
-        },
-        addTicketType(type, callback){
-            ticketTypes[type] = callback;
-        },
-        printWay(elem,instructions){
+        printInstructions(elem){
             let list = "";
             for(let i=0;i<instructions.length;i++)
                 list += `<li>${instructions[i]}</li>`;
@@ -323,12 +257,13 @@ var Journey = (function (){
 
             document.querySelector(elem).innerHTML += `<ul>${list}</ul>`;
         },
-        getPoints(cards){
-            return getNodes(cards);
+        addTicketType(type, callback){
+            ticketTypes[type] = callback;
         },
-        test(cards){
-            let matrix = makeAdjacencyMatrix(cards);
-            printMatrix('#matrix',matrix);
+        getTypes(){
+            return ticketTypes;
         }
-    }
-})();
+    };
+    
+    return Journey;
+}());
