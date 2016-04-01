@@ -3,7 +3,7 @@ var Journey = (function (){
 
     var adjacencyMatrix = [], // матрица смежности
         nodes = [], // вершины
-        edges = [], // ребра
+        edges = {}, // ребра
         nodesIndexes = {}, // объект для получения индекса вершины по имени
         nodesSequence = [],
         edgesSequence = [],
@@ -56,12 +56,12 @@ var Journey = (function (){
         instructions = getInstructions(edgesSequence);
     };
 
-    var getInstructions = function (edges) {
+    var getInstructions = function (edgesSeq) {
         let card,
             instructions = [];
 
-        for(let i = 0; i < edges.length; i++) {
-            card = edges[i];
+        for(let i = 0; i < edgesSeq.length; i++) {
+            card = edgesSeq[i];
             instructions.push(outCard(card));
         }
         return instructions;
@@ -193,7 +193,7 @@ var Journey = (function (){
     var getEdges = function (data) {
         let from,
             to,
-            edges = [];
+            edges = {};
 
         for(let i=0;i<data.length;i++) {
             from = data[i].from;
@@ -250,10 +250,16 @@ var Journey = (function (){
 
             document.querySelector(elem).innerHTML += `<ul>${list}</ul>`;
         },
-        simplePrint(elem,cards){
+        getSimple(){
+            let simple = [];
+            for(let i = 0; i < edgesSequence.length; i++)
+                simple.push(`From ${edgesSequence[i].from} to  ${edgesSequence[i].to}`)
+            return simple;
+        },
+        printSimple(elem){
             let list = "";
-            for(let i=0;i<cards.length;i++)
-                list += `<li>From ${cards[i].from} to  ${cards[i].to}</li>`;
+            for(let i=0;i<edgesSequence.length;i++)
+                list += `<li>From ${edgesSequence[i].from} to  ${edgesSequence[i].to}</li>`;
 
             document.querySelector(elem).innerHTML += `<ul>${list}</ul>`;
         },
@@ -261,7 +267,10 @@ var Journey = (function (){
             ticketTypes[type] = callback;
         },
         getTypes(){
-            return ticketTypes;
+            let types = [];
+            for(let t in ticketTypes)
+                types.push(t);
+            return types;
         }
     };
     

@@ -34,12 +34,16 @@
     getJson('data/cardsABE.json')
         .then(cards => {
             var journey = new Journey(cards);
-            //var types = journey.getTypes();
+            //var types = journey.getTypes(); // ["airplane", "train", "bus"]
             //var instructions = journey.getInstructions(); // ["Take bus 848F from A to B. Seat 98J.",
                                                             //  "From B, take flight UF22 to C. Gate 5. Seat undefi… be automatically transferred from your last leg.",
                                                             //  "Take bus 701C from C to D. Seat 36R.",
                                                             //  "From D, take flight FZ83 to B. Gate 35. Seat undef… be automatically transferred from your last leg.",
                                                             //  "From B, take flight YN11 to E. Gate 0. Seat undefi… be automatically transferred from your last leg."]
+
+            //var simpleInstruction = journey.getSimple(); // ["From A to  B", "From B to  C", "From C to  D", "From D to  B", "From B to  E"]
+
             journey.printInstructions("#instructions");
+            journey.printSimple("#simple");
         });
 })();
