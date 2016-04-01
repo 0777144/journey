@@ -1,6 +1,85 @@
 
 
 
+var journey = new Journey({
+    bus(card){
+        let ticket = {
+            number: card.ticket.number == "" ? "" : `${card.ticket.number} `,
+            spec: card.ticket.spec == "" ? "" : `the ${card.ticket.spec} `,
+            seat: card.ticket.seat == "" ? "No seat assignment." : `Seat ${card.ticket.seat}.`
+        };
+        return `Take ${ticket.spec}bus ${ticket.number}from ${card.from} to ${card.to}. ${ticket.seat}`;
+    }
+},cards);
+
+journey.printInstructions("#instructions");
+
+// --- ----- -------- ----- -------- ----- -----
+
+var journey = new Journey(cards);
+
+journey
+    .loadCards(cards)
+    .printInstructions("#instructions");
+
+journey
+    .addType("bus", function(card){
+        let ticket = {
+            number: card.ticket.number == "" ? "" : `${card.ticket.number} `,
+            spec: card.ticket.spec == "" ? "" : `the ${card.ticket.spec} `,
+            seat: card.ticket.seat == "" ? "No seat assignment." : `Seat ${card.ticket.seat}.`
+        };
+        return `Take ${ticket.spec}bus ${ticket.number}from ${card.from} to ${card.to}. ${ticket.seat}`;
+    })
+    .getInsructions();
+
+
+// --- ----- -------- ----- -------- ----- -----
+
+Journey.fn.types.extend({
+    bus(card){
+        let ticket = {
+            number: card.ticket.number == "" ? "" : `${card.ticket.number} `,
+            spec: card.ticket.spec == "" ? "" : `the ${card.ticket.spec} `,
+            seat: card.ticket.seat == "" ? "No seat assignment." : `Seat ${card.ticket.seat}.`
+        };
+        return `Take ${ticket.spec}bus ${ticket.number}from ${card.from} to ${card.to}. ${ticket.seat}`;
+    },
+    boat(card){
+        let ticket = card.getTiket({
+            number: number => number == "" ? "" : `${number} `,
+            spec: spec == "" ? "" : `the ${card.ticket.spec} `
+        });
+
+        return ``;
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+var journey = new Journey({
+    option: "value"
+},cards);
+
+// --- ----- -------- ----- -------- ----- -----
+
+
+
+
+
+
+
+////
+
+
 Cards.sort();
 // получаем отсортированный массив карточек
 
