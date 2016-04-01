@@ -1,6 +1,8 @@
 
 
 
+var journey = new Journey(cards);
+
 var journey = new Journey({
     bus(card){
         let ticket = {
@@ -14,9 +16,20 @@ var journey = new Journey({
 
 journey.printInstructions("#instructions");
 
+journey
+    .addType("bus", function(card){
+        let ticket = {
+            number: card.ticket.number == "" ? "" : `${card.ticket.number} `,
+            spec: card.ticket.spec == "" ? "" : `the ${card.ticket.spec} `,
+            seat: card.ticket.seat == "" ? "No seat assignment." : `Seat ${card.ticket.seat}.`
+        };
+        return `Take ${ticket.spec}bus ${ticket.number}from ${card.from} to ${card.to}. ${ticket.seat}`;
+    })
+    .getInsructions();
+
 // --- ----- -------- ----- -------- ----- -----
 
-var journey = new Journey(cards);
+var journey = new Journey();
 
 journey
     .loadCards(cards)

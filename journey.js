@@ -1,26 +1,25 @@
 var Journey = (function (){
     "use strict";
 
-    var incidenceMatrix = [], // матрица инцидентности
-        adjacencyMatrix = [], // матрица смежности
+    var adjacencyMatrix = [], // матрица смежности
         nodes = [], // вершины
         edges = [], // ребра
-        nodeParityDegrees = [], //четность степени вершин
-        nodeParityDegreesAssoc = {}, //четность степени вершин по имени
         nodesIndexes = {}, // объект для получения индекса вершины по имени
         startNode,
         endNode;
 
-    var Journey = function (data) {
-        init(data);
-    };
+    //var Journey = function (data) {
+    //    init(data);
+    //};
 
     //window.Journey = Journey;
 
     const merge = (...sources) => Object.assign({}, ...sources);
 
     var init = function (data) {
-        //edges = getEdges(data);
+        let nodesSequence,
+            edgesSequence = [];
+        edges = getEdges(data); // {"AB":{},"BC":{},"CD":{}}
         nodes = getNodes(data); // ["A","B", "D", "E", "C"]
         nodesIndexes = getNodesIndexes(data); // {"A":0,"B":1,"D":2,"E":3,"C":4}
         adjacencyMatrix = makeAdjacencyMatrix(data); // [[0,1,0,0,0],
@@ -38,94 +37,16 @@ var Journey = (function (){
 
         if(!checkForEulerPath(adjacencyMatrix))
             throw new Error('граф не является эйлеровым');
-        findEulerPath(adjacencyMatrix);
-        //checkForEulerPath();
-        //dmp(adjacencyMatrix);
-        //dir(nodes);
-        //adjacencyMatrix = makeAdjacencyMatrix3(data);
-        //nodeParityDegrees = getNodeParityDegrees(data);
-        //adjacencyMatrix = makeAdjacencyMatrix(data);
-        //dump(adjacencyMatrix);
-        //checkForEulerPath();
-        //findEulerPath();
+        nodesSequence = findEulerPath(adjacencyMatrix);
+        for( let i=0; i < nodesSequence.length-1; i++) {
+            let from = nodesSequence[i],
+                to = nodesSequence[i+1];
+
+            edgesSequence.push(edges[from+to]);
+        }
+
+        log(edgesSequence);
     };
-
-/*
-    var makeAdjacencyMatrix0 = function (data) {
-        // if !isArray throw new Error TODO
-        //Создание пустой matrix
-        //let vertices = nodes || getNodes(data),// nodes = nodes будет ошибка потому что он думает что это локальные nodes
-        let vertices = getNodes(data),// nodes = nodes будет ошибка потому что он думает что это локальные nodes
-            nodesAssoc = {},
-            matrix = {};
-
-        vertices.forEach(function(node, i){
-            nodesAssoc[node] = 0;// { A:0, B:0, C:0...}
-        });
-
-        matrix = merge({},nodesAssoc);// что matrix не ссылалась на nodesAssoc
-        for(let node in matrix){
-            matrix[node] = merge({},nodesAssoc);
-        }
-
-        // Заполнение matrix значениями
-        let from,
-            to;
-        for(let i=0;i<data.length;i++) {
-            from = data[i].from;
-            to = data[i].to;
-
-            matrix[from][to] = 1;
-        }
-        return matrix;
-    };
-
-    var makeAdjacencyMatrix2 = function (data) {
-        // if !isArray throw new Error TODO
-        //Создание пустой matrix
-        let nodesAssoc = nodes.length > 0 ? merge({},nodes) : getNodes2(data),//|| getNodes2(data),// nodes = nodes будет
-        // ошибка потому что он думает что это локальные nodes
-            matrix = {};
-
-        delete nodesAssoc.length;// length нам больше не нужен и будет только создвать ошибки при переборе for...in
-        //обнуляем все значения
-        for(let node in nodesAssoc) { nodesAssoc[node] = 0; }
-
-        matrix = merge({},nodesAssoc);// что matrix не ссылалась на nodesAssoc
-        for(let node in matrix){
-            matrix[node] = merge({},nodesAssoc);
-        }
-
-        // Заполнение matrix значениями
-        let from,
-            to;
-        for(let i=0;i<data.length;i++) {
-            from = data[i].from;
-            to = data[i].to;
-
-            matrix[from][to] = 1;
-        }
-        return matrix;
-    };
-
-    var printMatrix = function(elem,matrix){
-        let rows = '',
-            rowHeader = '<th></th>';
-
-        for(let i in matrix){
-            let cols = `<th>${i}</th>`;
-
-            for(let j in matrix[i]){
-                cols += `<td>${matrix[i][j]}</td>`;
-            }
-
-            rows += `<tr>${cols}</tr>`;
-            rowHeader += `<th>${i}</th>`;
-        }
-        document.querySelector(elem).innerHTML += `<table>${rowHeader+rows}</table>`;
-    };
-*/
-
 
     var checkForEulerPath = function (matrix) {
         let oddVertex = 0,
@@ -136,7 +57,7 @@ var Journey = (function (){
                 oddVertex++;
         }
         if(oddVertex > 2)
-            return false
+            return false;
 
         for(let v = 0; v < matrix.length; v++) {
             visited[v] = false; // массив инициализируется значениями false
@@ -157,17 +78,7 @@ var Journey = (function (){
         }
         return true;  // граф является эйлеровым
     };
-/*
-    vector<bool> visited;                       //вектор для хранения информации о пройденных и не пройденных вершинах
 
-    void dfs(int u)
-    {
-        visited[u] = true;                      //помечаем вершину как пройденную
-        for (v таких, что (u, v) — ребро в G)   //проходим по смежным с u вершинам
-        if (!visited[v])                    //проверяем, не находились ли мы ранее в выбранной вершине
-            dfs(v);
-    }
-*/
     var dfsVisited = [];
     var dfs = function (matrix,u) {
         dfsVisited[u] = true;
@@ -191,7 +102,8 @@ var Journey = (function (){
     };
 
     var findEulerPath = function(matrix) {
-        let n = nodes.length,
+        let resultNodes = [],
+            n = nodes.length,
             stack = [];
 
         for(let v = 0; v < matrix.length; v++) {
@@ -212,11 +124,10 @@ var Journey = (function (){
             }
             if(w == stack[stack.length-1]) {
                 stack.pop();
-                info(nodes[w]);
+                resultNodes.unshift(nodes[w]);
             }
-            //break;
         }
-        //условно прежположительно знаем что начнем с первой вершины TODO
+        return resultNodes;
     };
 
 
@@ -270,81 +181,6 @@ var Journey = (function (){
         return nodes;
     };
 
-    var getNodesIndexes = function(data) {
-        let vertices = nodes.length > 0 ? nodes : getNodes(data),
-            indexes = {};
-
-        for(let i = 0; i < vertices.length; i++) {
-            let nodeName = vertices[i];
-            indexes[nodeName] = i;
-        }
-
-        return indexes;
-    };
-
-    var getNodeParityDegrees = function (data) {
-        let fromIndex,
-            toIndex,
-            nodes = [];
-
-        for(let i=0;i<data.length;i++) {
-            fromIndex = nodesIndexes[data[i].from];
-            toIndex = nodesIndexes[data[i].to];
-
-            nodes[fromIndex] = nodes[fromIndex] === undefined ? 1 : nodes[fromIndex] + 1;
-            nodes[toIndex] = nodes[toIndex] === undefined ? -1 : nodes[toIndex] - 1;
-        }
-        return nodes;
-    };
-
-    var getNodeParityDegreesAssoc = function (data) {
-        let from,
-            to,
-            nodes = {};
-
-        for(let i=0;i<data.length;i++) {
-            from = data[i].from;
-            to = data[i].to;
-
-            // easy detect start(1) and end(-1) and even of nodes
-            // {A: 1, B: 0, D: 0, E: -1, C: 0}
-            nodes[from] = nodes[from] === undefined ? 1 : nodes[from] + 1;
-            nodes[to] = nodes[to] === undefined ? -1 : nodes[to] - 1;
-
-            // this way return smt like {A: 6, B: 5, D: 5, E: 4, C: 5} it is not very clear
-            // (but maybe faster, bcs || faster than ( ? : )
-            //nodes[from] = nodes[from] + 1 || 1 + data.length;// nodes[from] + 1 || 1 but if nodes[from] = -1 than (-1+1=0 || 1)=1 instead 0
-            //nodes[to] = nodes[to] - 1 || -1 + data.length;
-        }
-        nodes.length = data.length;
-        return nodes;
-    };
-
-    /*
-    var getNodeParityDegrees0 = function (data) {
-        let fromIndex,
-            toIndex,
-            nodes = {};
-
-        for(let i=0;i<data.length;i++) {
-            fromIndex = data[i].from;
-            toIndex = data[i].to;
-
-            // easy detect start(1) and end(-1) and even of nodes
-            // {A: 1, B: 0, D: 0, E: -1, C: 0}
-            nodes[from] = nodes[from] === undefined ? 1 : nodes[from] + 1;
-            nodes[to] = nodes[to] === undefined ? -1 : nodes[to] - 1;
-
-            // this way return smt like {A: 6, B: 5, D: 5, E: 4, C: 5} it is not very clear
-            // (but maybe faster, bcs || faster than ( ? : )
-            //nodes[from] = nodes[from] + 1 || 1 + data.length;// nodes[from] + 1 || 1 but if nodes[from] = -1 than (-1+1=0 || 1)=1 instead 0
-            //nodes[to] = nodes[to] - 1 || -1 + data.length;
-        }
-        nodes.length = data.length;
-        return nodes;
-    };
-    */
-
     var getEdges = function (data) {
         let from,
             to,
@@ -358,6 +194,18 @@ var Journey = (function (){
                 edges[from+to] = data[i];
         }
         return edges;
+    };
+
+    var getNodesIndexes = function(data) {
+        let vertices = nodes.length > 0 ? nodes : getNodes(data),
+            indexes = {};
+
+        for(let i = 0; i < vertices.length; i++) {
+            let nodeName = vertices[i];
+            indexes[nodeName] = i;
+        }
+
+        return indexes;
     };
 
     var ticketTypes = {
@@ -376,6 +224,7 @@ var Journey = (function (){
         }
     }
 
+    /*
     var sort = function(input){
         input = Array.from(input) || [];// передача по значнеию
         // валидация входных данных
@@ -433,6 +282,7 @@ var Journey = (function (){
 
         return result;
     };
+    */
 
     var outCard = function(card){
         if(ticketTypes[card.ticket.type] != undefined)
